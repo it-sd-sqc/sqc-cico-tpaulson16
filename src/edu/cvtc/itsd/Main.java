@@ -38,26 +38,33 @@ public class Main {
     private static final int MAX_LENGTH = 8;
 
     @Override
-    public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.insertString(fb, offset, stringToAdd, attr);
-      }
-      else {
+    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+            throws BadLocationException {
+      // Check the new length
+      int newLength = fb.getDocument().getLength() + string.length();
+      if (newLength <= MAX_LENGTH) { // Only insert if within the max length
+        super.insertString(fb, offset, string, attr);
+      } else {
         Toolkit.getDefaultToolkit().beep();
       }
     }
 
     @Override
-    public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
+    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+            throws BadLocationException {
+      Document doc = fb.getDocument();
+      int currentLength = doc.getLength();
+      int overLength = (currentLength - length) + text.length() - MAX_LENGTH;
+
+      if (overLength <= 0) {
+        super.replace(fb, offset, length, text, attrs);
+      } else {
+        if (text.length() > MAX_LENGTH) {
+          String newText = text.substring(0, text.length() - overLength);
+          super.replace(fb, offset, length, newText, attrs);
+        } else {
+          Toolkit.getDefaultToolkit().beep();
+        }
       }
     }
   }

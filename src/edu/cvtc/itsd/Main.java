@@ -113,6 +113,7 @@ public class Main {
   static JLabel labelUser;
   static JLabel labelState;
   static JButton buttonAcknowledge;
+  static JButton checkoutButton;
 
   // Timer variables //////////////////////////////////////////////////////////
   static java.util.Timer timer;
@@ -157,6 +158,7 @@ public class Main {
         }
 
         updateStateLabels(name, currentState == 1);
+        checkoutButton.setVisible(true);
         scheduleTransitionFrom(CARD_STATE, null);
       }
       else {
@@ -213,6 +215,7 @@ public class Main {
     fieldNumber.setText("");
     ((CardLayout)deck.getLayout()).show(deck, CARD_MAIN);
     fieldNumber.grabFocus();
+    checkoutButton.setVisible(false);
   }
 
   // Display name and new status //////////////////////////////////////////////
@@ -275,6 +278,16 @@ public class Main {
 
     panelMain.add(Box.createVerticalGlue());
 
+    checkoutButton = new JButton("Return");
+    checkoutButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+    checkoutButton.setForeground(Color.green);
+    checkoutButton.setVisible(false);
+    checkoutButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        doneProcessing();
+      }
+    });
+
     // Status panel ///////////////////////////////////////////////////////////
     JPanel panelStatus = new JPanel();
     panelStatus.setLayout(new BoxLayout(panelStatus, BoxLayout.PAGE_AXIS));
@@ -282,8 +295,9 @@ public class Main {
     panelStatus.setPreferredSize(new Dimension(640, 480));
     panelStatus.setMaximumSize(new Dimension(640, 480));
     panelStatus.setBackground(Color.blue);
-
+    panelStatus.add(checkoutButton);
     panelStatus.add(Box.createVerticalGlue());
+
     labelUser = new JLabel("Registrant", JLabel.LEADING);
     labelUser.setFont(fontMain);
     labelUser.setAlignmentX(JComponent.CENTER_ALIGNMENT);

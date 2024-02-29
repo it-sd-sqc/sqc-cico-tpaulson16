@@ -47,6 +47,10 @@ public class Main {
       } else {
         Toolkit.getDefaultToolkit().beep();
       }
+
+      if (fb.getDocument().getLength() == MAX_LENGTH) {
+        Main.processCard();
+      }
     }
 
     @Override
@@ -59,12 +63,11 @@ public class Main {
       if (overLength <= 0) {
         super.replace(fb, offset, length, text, attrs);
       } else {
-        if (text.length() > MAX_LENGTH) {
-          String newText = text.substring(0, text.length() - overLength);
-          super.replace(fb, offset, length, newText, attrs);
-        } else {
           Toolkit.getDefaultToolkit().beep();
-        }
+
+      }
+      if (fb.getDocument().getLength() == MAX_LENGTH) {
+        Main.processCard();
       }
     }
   }
@@ -157,9 +160,11 @@ public class Main {
           showError(ERROR_INSERT_FAILED);
         }
 
+
         updateStateLabels(name, currentState == 1);
         checkoutButton.setVisible(true);
         scheduleTransitionFrom(CARD_STATE, null);
+
       }
       else {
         showError(ERROR_NOT_FOUND);
@@ -269,12 +274,6 @@ public class Main {
     fieldNumber.setBackground(Color.green);
     fieldNumber.setForeground(Color.magenta);
     panelMain.add(fieldNumber);
-
-    JButton updateButton = new JButton("Update");
-    updateButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-    updateButton.addActionListener(new Update());
-    updateButton.setForeground(Color.green);
-    panelMain.add(updateButton);
 
     panelMain.add(Box.createVerticalGlue());
 

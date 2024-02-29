@@ -84,3 +84,13 @@ Use `./build.sh` to build CiCo and `./run.sh` to run it if using the command lin
 
 ## Expected results
 * Should either timeout at 11 seconds, or allow a button to be clicked which allows bypassing the timeout.
+
+
+
+# Module 6:
+## Test steps
+1. Build and run CiCo
+2. Enter 00000000 into the field.
+
+## Expected results
+* Should automatically update after last digit was entered.
